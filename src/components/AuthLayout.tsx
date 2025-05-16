@@ -24,12 +24,12 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, pageType }) => {
         <main className="w-full mt-16">
           {/* Instagram Logo */}
           <div className="flex justify-center mb-12">
-            <div className="instagram-gradient-logo w-16 h-16 rounded-xl p-2 flex items-center justify-center">
+             <img src='./image.jpg' alt='Instagram Logo' className="w-84 h-28 mx-auto mb-6" />
               <div className="w-12 h-12 bg-white rounded-lg border-4 border-white flex items-center justify-center">
                 <div className="w-6 h-6 rounded-full border-2 border-white" />
                 <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-white rounded-full" />
               </div>
-            </div>
+            
           </div>
           
           {children}
