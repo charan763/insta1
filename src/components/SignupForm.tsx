@@ -1,76 +1,91 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Facebook } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 const SignupForm: React.FC = () => {
+  const [emailOrMobile, setEmailOrMobile] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Add signup logic here when we implement Firebase
+  };
+
   return (
     <div className="space-y-4">
-       <p className="text-center font-semibold text-gray-500 mb-4">
+      <p className="text-center font-semibold text-gray-600 mb-6">
         Sign up to see photos and videos from your friends.
       </p>
-      <Button variant="default" className="w-full bg-[#0095F6] hover:bg-[#0083D3] text-white font-semibold">
-        <Facebook className="mr-2 h-5 w-5" />
-        Log in with Facebook
-      </Button>
 
-      <div className="relative my-4">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-300" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-2 text-gray-500 font-semibold">OR</span>
-        </div>
-      </div>
-
-      <form className="space-y-3">
+      <form onSubmit={handleSubmit} className="space-y-3">
         <div>
-          <Label htmlFor="emailOrMobile" className="sr-only">Mobile Number or Email</Label>
           <Input
             id="emailOrMobile"
             name="emailOrMobile"
             type="text"
+            value={emailOrMobile}
+            onChange={(e) => setEmailOrMobile(e.target.value)}
             required
             placeholder="Mobile Number or Email"
-            className="bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400"
+            className="w-full px-4 py-3 text-[16px] border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
           />
         </div>
         <div>
-          <Label htmlFor="fullName" className="sr-only">Full Name</Label>
           <Input
             id="fullName"
             name="fullName"
             type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
             required
             placeholder="Full Name"
-            className="bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400"
+            className="w-full px-4 py-3 text-[16px] border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
           />
         </div>
         <div>
-          <Label htmlFor="username" className="sr-only">Username</Label>
           <Input
             id="username"
             name="username"
             type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             autoComplete="username"
             required
             placeholder="Username"
-            className="bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400"
+            className="w-full px-4 py-3 text-[16px] border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
           />
         </div>
-        <div>
-          <Label htmlFor="password" className="sr-only">Password</Label>
+        <div className="relative">
           <Input
             id="password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             autoComplete="new-password"
             required
             placeholder="Password"
-            className="bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400"
+            className="w-full px-4 py-3 text-[16px] border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
           />
+          {password && (
+            <button 
+              type="button" 
+              className="absolute right-3 top-3"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5 text-gray-500" />
+              ) : (
+                <Eye className="h-5 w-5 text-gray-500" />
+              )}
+            </button>
+          )}
         </div>
 
         <div className="text-xs text-gray-500 text-center space-y-2 pt-2">
@@ -82,7 +97,11 @@ const SignupForm: React.FC = () => {
             </p>
         </div>
 
-        <Button type="submit" className="w-full bg-[#0095F6] hover:bg-[#0083D3] text-white mt-4">
+        <Button 
+          type="submit" 
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-6 mt-4 text-[16px]"
+          disabled={!emailOrMobile || !fullName || !username || !password}
+        >
           Sign Up
         </Button>
       </form>

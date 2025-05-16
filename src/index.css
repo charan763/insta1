@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -98,4 +99,17 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Instagram Logo Gradient */
+.instagram-gradient-logo {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  position: relative;
+}
+
+/* Add custom font import for Instagram logo */
+@import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap');
+
+.font-instagram {
+  font-family: 'Grand Hotel', cursive;
 }

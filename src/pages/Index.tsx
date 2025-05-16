@@ -4,23 +4,29 @@ import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white p-4">
       <div className="text-center max-w-md">
-        <h1 className="text-5xl font-bold mb-6 text-gray-800">Welcome!</h1>
+        <div className="flex justify-center mb-8">
+          <div className="instagram-gradient-logo w-20 h-20 rounded-xl p-2 flex items-center justify-center">
+            <div className="w-16 h-16 bg-white rounded-lg border-4 border-white flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full border-2 border-white" />
+              <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-white rounded-full" />
+            </div>
+          </div>
+        </div>
+        
+        <h1 className="text-4xl font-bold mb-6 font-instagram">Instagram</h1>
         <p className="text-xl text-gray-600 mb-8">
-          This is a clone of Instagram's login and signup flow.
+          Connect with friends and share your moments
         </p>
-        <div className="space-y-4 sm:space-y-0 sm:flex sm:space-x-4 justify-center">
-          <Button asChild size="lg" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
-            <Link to="/login">Go to Login Page</Link>
+        <div className="space-y-4">
+          <Button asChild size="lg" className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-6">
+            <Link to="/login">Log in</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-blue-600 text-blue-600 hover:bg-blue-50">
-            <Link to="/signup">Go to Signup Page</Link>
+          <Button asChild size="lg" variant="outline" className="w-full border-gray-300 text-blue-500 hover:bg-gray-50 rounded-lg py-6">
+            <Link to="/signup">Create new account</Link>
           </Button>
         </div>
-        <p className="text-sm text-gray-500 mt-12">
-          Firebase integration for backend functionality will be the next step.
-        </p>
       </div>
     </div>
   );
